@@ -50,7 +50,7 @@ async function main() {
     hotels = await prisma.hotel.create({
       data: {
         name: "Driven Resort",
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWcewvO2ESob6z1siAWtZ7T8aIUXV40kklsQ&usqp=CAU",
+        image: "https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg",
       }
     })
     hotels = await prisma.hotel.create({
