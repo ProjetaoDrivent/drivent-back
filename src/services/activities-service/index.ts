@@ -5,12 +5,11 @@ import { cannotListActivitiesError } from "@/errors/cannot-list-activities-error
 import activitiesRepository from "@/repositories/activities-repository";
 
 async function listActivities(userId: number) {
-  //Tem enrollment?
   const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);
   if (!enrollment) {
     throw notFoundError();
   }
-  //Tem ticket pago isOnline false e includesHotel true
+
   const ticket = await ticketRepository.findTicketByEnrollmentId(enrollment.id);
 
   if (!ticket || ticket.status === "RESERVED" || ticket.TicketType.isRemote) {
