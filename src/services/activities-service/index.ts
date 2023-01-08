@@ -17,15 +17,19 @@ async function listActivities(userId: number) {
   }
 }
 
-async function getActivities(userId: number) {
+async function getActivityDays(userId: number) {
   await listActivities(userId);
 
-  const hotels = await activitiesRepository.findActivities();
-  return hotels;
+  const activitiesDays = await activitiesRepository.findActivitiesDays();
+
+  if (!activitiesDays) {
+    throw notFoundError();
+  }
+  return activitiesDays;
 }
 
 const activitiesService = {
-  getActivities,
+  getActivityDays
 };
 
 export default activitiesService;

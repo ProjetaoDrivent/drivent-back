@@ -148,11 +148,21 @@ model ActivitiesLocals {
   updatedAt  DateTime     @updatedAt
 }
 
+model ActivitiesDate {
+  id         Int          @id @default(autoincrement())
+  date       DateTime     @unique
+  weekday    String
+  Activities Activities[]
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+}
+
 model Activities {
   id                Int                 @id @default(autoincrement())
   title             String              @db.VarChar(255)
   capacity          Int
-  date              DateTime            @db.Date()
+  ActivitiesDate    ActivitiesDate      @relation(fields: [activitiesDateId], references: [id])
+  activitiesDateId  Int
   startsAt          DateTime            @db.Time(6)
   endsAt            DateTime            @db.Time(6)
   ActivitiesLocals  ActivitiesLocals    @relation(fields: [localId], references: [id])
