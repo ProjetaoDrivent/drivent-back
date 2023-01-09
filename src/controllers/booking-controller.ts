@@ -71,26 +71,24 @@ export async function changeBooking(req: AuthenticatedRequest, res: Response) {
 export async function userBooking(req: AuthenticatedRequest, res: Response) {
   try {
     const { userId } = req;
-    const bookingId = Number(req.params.bookingId);
-
-    if(!bookingId) {
+    
+    if(!userId) {
       return res.sendStatus(httpStatus.BAD_REQUEST);
     }
-
-    const { roomId } = req.body;
-
-    if(!roomId) {
-      return res.sendStatus(httpStatus.BAD_REQUEST);
+    
+    const booking = await bookingService.getBookingByUserId(userId);
+    if(!booking) {
+      return res.sendStatus(httpStatus.NOT_FOUND);
     }
-
-    const booking = await bookingService.getBookingsByRoomId(roomId);
-    const room = await bookingService.getRoomById(roomId);
+    const bookingsOfRomm = await bookingService.getBookingsByRoomId(booking.roomId);
 
     return res.status(httpStatus.OK).send({
-      name: room.name,
-      capacity: room.capacity,
-      roomId: room.id,
-      booking
+      name: booking.Room.name,
+      capacity: booking.Room.capacity,
+      roomId: booking.Room.id,
+      hotelName: bookingsOfRomm.Room.Hotel.name,
+      image: bookingsOfRomm.Room.Hotel.image,
+      occupation: bookingsOfRomm.occupation,
     });
   } catch (error) {
     return res.sendStatus(httpStatus.NOT_FOUND);

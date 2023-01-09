@@ -8,7 +8,7 @@ bookingRouter
   .all("/*", authenticateToken)
   .get("", listBooking)
   .post("", bookingRoom)
-  .get("/:bookingId", userBooking)
+  .get("/resumeRoom", userBooking)
   .put("/:bookingId", changeBooking);
 
 export { bookingRouter };

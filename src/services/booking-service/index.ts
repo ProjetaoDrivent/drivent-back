@@ -70,12 +70,26 @@ async function getRoomById(roomId: number) {
 }
 
 async function getBookingsByRoomId(roomId: number) {
-  const booking = await bookingRepository.findByRoomId(roomId);
+  const booking = await bookingRepository.findImageByRoomId(roomId);
 
   if(!booking) {
     throw notFoundError();
   }
 
+  const bookingOccupation = await bookingRepository.findByRoomId(roomId);
+
+  if(!bookingOccupation) {
+    throw notFoundError();
+  }
+
+  return { ... booking, occupation: bookingOccupation.length };
+}
+
+async function getBookingByUserId(userId: number) {
+  const booking = await bookingRepository.findByUserId(userId);
+  if(!booking) {
+    throw notFoundError();
+  }
   return booking;
 }
 
@@ -85,6 +99,7 @@ const bookingService = {
   changeBookingRoomById,
   getRoomById,
   getBookingsByRoomId,
+  getBookingByUserId
 };
 
 export default bookingService;
