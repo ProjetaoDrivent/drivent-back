@@ -28,8 +28,32 @@ async function getActivityDays(userId: number) {
   return activitiesDays;
 }
 
+async function getActivityLocals(userId: number) {
+  await listActivities(userId);
+
+  const activitiesLocals = await activitiesRepository.findActivitiesLocals();
+
+  if (!activitiesLocals) {
+    throw notFoundError();
+  }
+  return activitiesLocals;
+}
+
+async function getActivitiesByDate(userId: number, activitiesDateId: number, localId: number) {
+  await listActivities(userId);
+
+  const activities = await activitiesRepository.findActivitiesbyDate(activitiesDateId, localId);
+
+  if (!activities) {
+    throw notFoundError();
+  }
+  return activities;
+}
+
 const activitiesService = {
-  getActivityDays
+  getActivityDays,
+  getActivityLocals,
+  getActivitiesByDate
 };
 
 export default activitiesService;
