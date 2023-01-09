@@ -16,7 +16,58 @@ async function main() {
     });
   }
 
-  console.log({ event });
+  let ticketType = await prisma.ticketType.findFirst();
+  if (!ticketType) {
+    ticketType = await prisma.ticketType.create({
+      data: 
+        {
+          name: "Presencial",
+          price: 250,
+          isRemote: false,
+          includesHotel: false
+        }
+    })
+    ticketType = await prisma.ticketType.create({
+      data: {
+        name: "Presencial",
+        price: 250,
+        isRemote: false,
+        includesHotel: true
+      }
+    })
+    ticketType = await prisma.ticketType.create({
+      data: {
+        name: "Online",
+        price: 100,
+        isRemote: true,
+        includesHotel: false
+      }
+    })
+  }
+
+  let hotels = await prisma.hotel.findFirst()
+  if(!hotels){
+    hotels = await prisma.hotel.create({
+      data: {
+        name: "Driven Resort",
+        image: "https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg",
+      }
+    })
+    hotels = await prisma.hotel.create({
+      data: {
+        name: "Driven Palace",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWcewvO2ESob6z1siAWtZ7T8aIUXV40kklsQ&usqp=CAU",
+      }
+    })
+    hotels = await prisma.hotel.create({
+      data: {
+        name: "Driven World",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEd1wr1EHctrSg5aC5htxA_clo3486Xmp2Mw&usqp=CAU"
+      }
+    })
+  }
+
+  console.log({ event, ticketType, hotels });
 }
 
 main()

@@ -50,11 +50,27 @@ async function upsertBooking({ id, roomId, userId }: UpdateParams) {
   });
 }
 
+async function findImageByRoomId(roomId: number) {
+  return prisma.booking.findFirst({
+    where: {
+      roomId,
+    },
+    include: {
+      Room: {
+        include: {
+          Hotel: true
+        }
+      }
+    }
+  });
+}
+
 const bookingRepository = {
   create,
   findByRoomId,
   findByUserId,
   upsertBooking,
+  findImageByRoomId,
 };
 
 export default bookingRepository;
