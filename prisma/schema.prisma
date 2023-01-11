@@ -150,7 +150,7 @@ model ActivitiesLocals {
 
 model ActivitiesDate {
   id         Int          @id @default(autoincrement())
-  date       DateTime     @unique
+  date       DateTime     @unique @db.Date
   weekday    String
   Activities Activities[]
   createdAt  DateTime     @default(now())
@@ -163,13 +163,15 @@ model Activities {
   capacity          Int
   ActivitiesDate    ActivitiesDate      @relation(fields: [activitiesDateId], references: [id])
   activitiesDateId  Int
-  startsAt          DateTime
-  endsAt            DateTime
+  startsAt          DateTime            @db.Time(6)
+  endsAt            DateTime            @db.Time(6)
   ActivitiesLocals  ActivitiesLocals    @relation(fields: [localId], references: [id])
   localId           Int
   ActivitiesBooking ActivitiesBooking[]
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
+
+  @@index([activitiesDateId])
 }
 
 model ActivitiesBooking {

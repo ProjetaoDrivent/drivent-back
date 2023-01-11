@@ -11,7 +11,7 @@ CREATE TABLE "ActivitiesLocals" (
 -- CreateTable
 CREATE TABLE "ActivitiesDate" (
     "id" SERIAL NOT NULL,
-    "date" TIMESTAMP(3) NOT NULL,
+    "date" DATE NOT NULL,
     "weekday" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -25,8 +25,8 @@ CREATE TABLE "Activities" (
     "title" VARCHAR(255) NOT NULL,
     "capacity" INTEGER NOT NULL,
     "activitiesDateId" INTEGER NOT NULL,
-    "startsAt" TIMESTAMP(3) NOT NULL,
-    "endsAt" TIMESTAMP(3) NOT NULL,
+    "startsAt" TIME(6) NOT NULL,
+    "endsAt" TIME(6) NOT NULL,
     "localId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -50,6 +50,9 @@ CREATE UNIQUE INDEX "ActivitiesLocals_name_key" ON "ActivitiesLocals"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "ActivitiesDate_date_key" ON "ActivitiesDate"("date");
+
+-- CreateIndex
+CREATE INDEX "Activities_activitiesDateId_idx" ON "Activities"("activitiesDateId");
 
 -- AddForeignKey
 ALTER TABLE "Activities" ADD CONSTRAINT "Activities_localId_fkey" FOREIGN KEY ("localId") REFERENCES "ActivitiesLocals"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

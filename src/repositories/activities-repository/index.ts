@@ -18,6 +18,9 @@ async function findActivitiesbyDate(activitiesDateId: number, localId: number) {
       activitiesDateId: activitiesDateId,
       localId: localId
     },
+    orderBy: {
+      startsAt: "asc"
+    }
   });
 }
 
