@@ -1,11 +1,13 @@
 import { Router } from "express";
 import { authenticateToken } from "@/middlewares";
-import { getActivityDays } from "@/controllers/activities-controller";
+import { getActivitiesByDate, getActivityDays, getActivityLocals } from "@/controllers/activities-controller";
 
 const activitiesRouter = Router();
 
 activitiesRouter
   .all("/*", authenticateToken)
-  .get("/dayActivities", getActivityDays);
+  .get("/activitiesDays", getActivityDays)
+  .get("/activitiesLocals", getActivityLocals)
+  .get("/:activitiesDateId/:localId", getActivitiesByDate);
 
 export { activitiesRouter };
