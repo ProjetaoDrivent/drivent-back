@@ -9,13 +9,24 @@ CREATE TABLE "ActivitiesLocals" (
 );
 
 -- CreateTable
+CREATE TABLE "ActivitiesDate" (
+    "id" SERIAL NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL,
+    "weekday" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "ActivitiesDate_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Activities" (
     "id" SERIAL NOT NULL,
     "title" VARCHAR(255) NOT NULL,
     "capacity" INTEGER NOT NULL,
-    "date" DATE NOT NULL,
-    "startsAt" TIME(6) NOT NULL,
-    "endsAt" TIME(6) NOT NULL,
+    "activitiesDateId" INTEGER NOT NULL,
+    "startsAt" TIMESTAMP(3) NOT NULL,
+    "endsAt" TIMESTAMP(3) NOT NULL,
     "localId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -37,8 +48,14 @@ CREATE TABLE "ActivitiesBooking" (
 -- CreateIndex
 CREATE UNIQUE INDEX "ActivitiesLocals_name_key" ON "ActivitiesLocals"("name");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "ActivitiesDate_date_key" ON "ActivitiesDate"("date");
+
 -- AddForeignKey
 ALTER TABLE "Activities" ADD CONSTRAINT "Activities_localId_fkey" FOREIGN KEY ("localId") REFERENCES "ActivitiesLocals"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Activities" ADD CONSTRAINT "Activities_activitiesDateId_fkey" FOREIGN KEY ("activitiesDateId") REFERENCES "ActivitiesDate"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ActivitiesBooking" ADD CONSTRAINT "ActivitiesBooking_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

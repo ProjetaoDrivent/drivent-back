@@ -163,8 +163,8 @@ model Activities {
   capacity          Int
   ActivitiesDate    ActivitiesDate      @relation(fields: [activitiesDateId], references: [id])
   activitiesDateId  Int
-  startsAt          DateTime            @db.Time(6)
-  endsAt            DateTime            @db.Time(6)
+  startsAt          DateTime
+  endsAt            DateTime
   ActivitiesLocals  ActivitiesLocals    @relation(fields: [localId], references: [id])
   localId           Int
   ActivitiesBooking ActivitiesBooking[]
