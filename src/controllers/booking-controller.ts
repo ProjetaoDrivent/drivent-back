@@ -83,9 +83,11 @@ export async function userBooking(req: AuthenticatedRequest, res: Response) {
     const bookingsOfRomm = await bookingService.getBookingsByRoomId(booking.roomId);
 
     return res.status(httpStatus.OK).send({
+      id: booking.id,
       name: booking.Room.name,
       capacity: booking.Room.capacity,
       roomId: booking.Room.id,
+      hotelId: booking.Room.hotelId,
       hotelName: bookingsOfRomm.Room.Hotel.name,
       image: bookingsOfRomm.Room.Hotel.image,
       occupation: bookingsOfRomm.occupation,
