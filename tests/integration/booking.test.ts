@@ -194,6 +194,7 @@ describe("POST /booking", () => {
     });
     it("should respond with status 403 with a invalid body - there's not vacancy", async () => {
       const user = await createUser();
+      const user2 = await createUser();
       const token = await generateValidToken(user);
       const enrollment = await createEnrollmentWithAddress(user);
       const ticketType = await createTicketTypeWithHotel();
@@ -203,15 +204,15 @@ describe("POST /booking", () => {
       const hotel = await createHotel();
       const room = await createRoomWithHotelId(hotel.id);
       await createBooking({
-        userId: user.id,
+        userId: user2.id,
         roomId: room.id,
       });
       await createBooking({
-        userId: user.id,
+        userId: user2.id,
         roomId: room.id,
       });
       await createBooking({
-        userId: user.id,
+        userId: user2.id,
         roomId: room.id,
       });
 
@@ -247,6 +248,30 @@ describe("POST /booking", () => {
       const hotel = await createHotel();
       const room = await createRoomWithHotelId(hotel.id);
 
+      const response = await server.post("/booking").set("Authorization", `Bearer ${token}`).send({
+        roomId: room.id,
+      });
+
+      expect(response.status).toEqual(httpStatus.FORBIDDEN);
+    });
+
+    it("should respond with status 403 if user already has a booking", async () => {
+      const user = await createUser();
+      const token = await generateValidToken(user);
+      const enrollment = await createEnrollmentWithAddress(user);
+      const ticketType = await createTicketTypeWithHotel();
+      const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
+      const payment = await createPayment(ticket.id, ticketType.price);
+
+      const hotel = await createHotel();
+      const room = await createRoomWithHotelId(hotel.id);
+
+      await createBooking({
+        userId: user.id,
+        roomId: room.id,
+      });
+
+      const validBody = createValidBody();
       const response = await server.post("/booking").set("Authorization", `Bearer ${token}`).send({
         roomId: room.id,
       });
