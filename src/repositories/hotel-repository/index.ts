@@ -11,16 +11,17 @@ async function findRoomsByHotelId(hotelId: number) {
     },
     include: {
       Rooms: {
-        include: {
-          Booking: {
-            select: {
-              id: true,
-              roomId: true
-            }
-          }
+        select: {
+          id: true,
+          name: true,
+          capacity: true,
+          hotelId: true,
+          Booking: true,
+        }, orderBy: {
+          name: "asc"
         }
       },
-    }
+    },
   });
 }
 
