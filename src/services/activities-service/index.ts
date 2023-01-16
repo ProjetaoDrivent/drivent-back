@@ -47,7 +47,13 @@ async function getActivitiesByDate(userId: number, activitiesDateId: number, loc
   if (!activities) {
     throw notFoundError();
   }
-  return activities;
+  const activitiesMap = activities.map((activity) => ({
+    ... activity, 
+    ActivitiesBooking: activity.ActivitiesBooking.length,
+    ActivitiesVacancies: (activity.capacity) - (activity.ActivitiesBooking.length), 
+  }));
+
+  return activitiesMap;
 }
 
 const activitiesService = {
