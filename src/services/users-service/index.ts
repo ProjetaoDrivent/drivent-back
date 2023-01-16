@@ -4,6 +4,7 @@ import { User } from "@prisma/client";
 import bcrypt from "bcrypt";
 import eventsService from "../events-service";
 import { duplicatedEmailError } from "./errors";
+import sessionRepository from "@/repositories/session-repository";
 
 export async function createUser({ email, password }: CreateUserParams): Promise<User> {
   await canEnrollOrFail();

@@ -6,7 +6,7 @@ import { Router } from "express";
 const authenticationRouter = Router();
 
 authenticationRouter.post("/sign-in", validateBody(signInSchema), singInPost);
-authenticationRouter.post("/oauth/github/accessToken", githubSignIn);
+authenticationRouter.get("/oauth/github/accessToken", githubSignIn);
 authenticationRouter.get("/oauth/github/userData", getGithubUserData);
 
 export { authenticationRouter };
